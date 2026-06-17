@@ -706,20 +706,185 @@ const QUICK_CHIPS = [
 ];
 
 // ══════════════════════════════════════════════════════════════════════
-// DATA: RELATED ROLES MAP
+// DATA: ROLE TAXONOMY  (keywords → canonical domain)
 // ══════════════════════════════════════════════════════════════════════
-const RELATED_ROLES = {
-  'product manager': ['Associate Product Manager','Product Analyst','Junior Product Manager','Product Owner','Product Specialist','Product Operations Analyst','Growth Product Manager','Product Strategy Analyst'],
-  'associate product manager': ['Associate Product Manager','Product Analyst','Junior Product Manager','Product Owner','Product Specialist','Product Operations Analyst','Growth Product Manager','Product Strategy Analyst'],
-  'data analyst': ['Data Analyst','BI Analyst','Business Analyst','Reporting Analyst','Analytics Associate','Product Analyst','Junior Data Scientist'],
-  'software engineer': ['Software Engineer','Backend Engineer','Frontend Engineer','Full Stack Developer','Application Engineer','Software Developer','Platform Engineer'],
-  'business analyst': ['Business Analyst','Product Analyst','Operations Analyst','Strategy Analyst','Business Intelligence Analyst'],
-  'data scientist': ['Data Scientist','ML Engineer','AI Engineer','Research Scientist','Analytics Scientist'],
-  'machine learning engineer': ['Machine Learning Engineer','ML Engineer','AI Engineer','Deep Learning Engineer','NLP Engineer','Computer Vision Engineer'],
-  'ux designer': ['UX Designer','UI Designer','Product Designer','UX Researcher','Interaction Designer','Design Strategist'],
-  'marketing analyst': ['Marketing Analyst','Digital Marketing Analyst','Growth Analyst','Performance Marketing Manager','Marketing Data Analyst'],
-  'cybersecurity analyst': ['Cybersecurity Analyst','Information Security Analyst','SOC Analyst','Threat Intelligence Analyst','Penetration Tester'],
-};
+const ROLE_DOMAINS = [
+  {
+    id: 'product',
+    keywords: ['product manager','product management','pm','apm','associate product','growth pm','technical pm','platform pm','product owner','product lead','product head'],
+    fullTitles:  ['Product Manager','Associate Product Manager','Senior Product Manager','Growth PM','Technical PM','Platform PM','Product Owner','VP of Product'],
+    internTitles:['Product Management Intern','APM Intern','Product Intern','Growth Product Intern','Product Strategy Intern','Product Operations Intern'],
+    related:     ['Associate Product Manager','Product Analyst','Junior Product Manager','Product Owner','Product Specialist','Growth Product Manager','Product Strategy Analyst'],
+    internRelated:['Product Management Intern','APM Intern','Product Intern','Business Analyst Intern','Strategy Intern','Product Operations Intern'],
+    stipend:     ['₹15,000–25,000/mo','₹20,000–35,000/mo','₹25,000–40,000/mo','₹30,000–50,000/mo'],
+  },
+  {
+    id: 'data_analyst',
+    keywords: ['data analyst','bi analyst','reporting analyst','analytics associate','analytics engineer','business intelligence analyst','data analytics'],
+    fullTitles:  ['Data Analyst','Senior Data Analyst','BI Analyst','Analytics Engineer','Reporting Analyst','Product Analyst','Data Analytics Lead'],
+    internTitles:['Data Analyst Intern','Analytics Intern','BI Intern','Data Intern','Reporting Intern','Data Analytics Intern'],
+    related:     ['Data Analyst','BI Analyst','Business Analyst','Reporting Analyst','Analytics Associate','Product Analyst','Junior Data Scientist'],
+    internRelated:['Data Analyst Intern','Analytics Intern','Business Analyst Intern','Data Science Intern','BI Intern','SQL Intern'],
+    stipend:     ['₹10,000–20,000/mo','₹15,000–25,000/mo','₹20,000–35,000/mo','₹25,000–40,000/mo'],
+  },
+  {
+    id: 'software',
+    keywords: ['software engineer','software developer','sde','backend engineer','frontend engineer','full stack','fullstack','platform engineer','application engineer','web developer','app developer','swe'],
+    fullTitles:  ['Software Engineer','Senior Software Engineer','Backend Engineer','Frontend Engineer','Full Stack Developer','Platform Engineer','SDE-I','SDE-II'],
+    internTitles:['Software Engineer Intern','SDE Intern','Backend Intern','Frontend Intern','Full Stack Intern','Web Dev Intern','Engineering Intern'],
+    related:     ['Software Engineer','Backend Engineer','Frontend Engineer','Full Stack Developer','Application Engineer','Software Developer','Platform Engineer'],
+    internRelated:['Software Engineer Intern','SDE Intern','Backend Intern','Frontend Intern','Full Stack Intern','DevOps Intern','QA Intern'],
+    stipend:     ['₹15,000–30,000/mo','₹20,000–40,000/mo','₹25,000–50,000/mo','₹30,000–60,000/mo'],
+  },
+  {
+    id: 'business_analyst',
+    keywords: ['business analyst','operations analyst','strategy analyst','process analyst','management consultant','ba'],
+    fullTitles:  ['Business Analyst','Senior BA','Product Analyst','Operations Analyst','Strategy Analyst','Business Intelligence Analyst'],
+    internTitles:['Business Analyst Intern','Strategy Intern','Operations Intern','Consulting Intern','Business Development Intern','BA Intern'],
+    related:     ['Business Analyst','Product Analyst','Operations Analyst','Strategy Analyst','Business Intelligence Analyst'],
+    internRelated:['Business Analyst Intern','Strategy Intern','Operations Intern','Product Management Intern','Growth Intern','Consulting Intern'],
+    stipend:     ['₹12,000–22,000/mo','₹15,000–28,000/mo','₹20,000–35,000/mo'],
+  },
+  {
+    id: 'data_scientist',
+    keywords: ['data scientist','ml engineer','machine learning','ai engineer','deep learning','nlp engineer','computer vision','research scientist','analytics scientist'],
+    fullTitles:  ['Data Scientist','ML Engineer','AI Engineer','Research Scientist','Analytics Scientist','Deep Learning Engineer','NLP Engineer'],
+    internTitles:['Data Science Intern','ML Intern','AI Intern','Research Intern','NLP Intern','Computer Vision Intern','Analytics Intern'],
+    related:     ['Data Scientist','ML Engineer','AI Engineer','Research Scientist','Analytics Scientist'],
+    internRelated:['Data Science Intern','ML Intern','AI Intern','Research Intern','NLP Intern','Data Analyst Intern'],
+    stipend:     ['₹20,000–35,000/mo','₹25,000–45,000/mo','₹30,000–60,000/mo'],
+  },
+  {
+    id: 'ux',
+    keywords: ['ux designer','ui designer','product designer','ux researcher','interaction designer','design','figma','ui/ux'],
+    fullTitles:  ['UX Designer','UI Designer','Product Designer','UX Researcher','Interaction Designer','Design Lead'],
+    internTitles:['UX Design Intern','UI/UX Intern','Product Design Intern','Design Intern','UX Research Intern','Visual Design Intern'],
+    related:     ['UX Designer','UI Designer','Product Designer','UX Researcher','Interaction Designer','Design Strategist'],
+    internRelated:['UX Design Intern','UI/UX Intern','Product Design Intern','Graphic Design Intern','UX Research Intern'],
+    stipend:     ['₹10,000–20,000/mo','₹15,000–28,000/mo','₹20,000–35,000/mo'],
+  },
+  {
+    id: 'marketing',
+    keywords: ['marketing analyst','digital marketing','growth analyst','performance marketing','seo','sem','content marketing','brand marketing','social media'],
+    fullTitles:  ['Marketing Analyst','Digital Marketing Manager','Growth Analyst','Performance Marketing Manager','SEO Analyst','Brand Manager'],
+    internTitles:['Marketing Intern','Digital Marketing Intern','Growth Intern','Content Intern','SEO Intern','Social Media Intern','Brand Intern'],
+    related:     ['Marketing Analyst','Digital Marketing Analyst','Growth Analyst','Performance Marketing Manager','Marketing Data Analyst'],
+    internRelated:['Marketing Intern','Digital Marketing Intern','Growth Intern','Content Intern','SEO Intern'],
+    stipend:     ['₹8,000–15,000/mo','₹12,000–22,000/mo','₹15,000–28,000/mo'],
+  },
+  {
+    id: 'cybersecurity',
+    keywords: ['cybersecurity','information security','soc analyst','threat intelligence','penetration tester','security analyst','infosec','cyber'],
+    fullTitles:  ['Cybersecurity Analyst','Information Security Analyst','SOC Analyst','Threat Intelligence Analyst','Penetration Tester'],
+    internTitles:['Cybersecurity Intern','Security Intern','SOC Intern','InfoSec Intern','Ethical Hacking Intern','Security Research Intern'],
+    related:     ['Cybersecurity Analyst','Information Security Analyst','SOC Analyst','Threat Intelligence Analyst','Penetration Tester'],
+    internRelated:['Cybersecurity Intern','Security Intern','SOC Intern','InfoSec Intern','Network Security Intern'],
+    stipend:     ['₹12,000–22,000/mo','₹15,000–28,000/mo','₹20,000–35,000/mo'],
+  },
+  {
+    id: 'finance',
+    keywords: ['finance','financial analyst','investment banking','equity research','credit analyst','accounting','ca','cfa','treasury','fintech'],
+    fullTitles:  ['Financial Analyst','Investment Banking Analyst','Equity Research Analyst','Credit Analyst','Finance Manager'],
+    internTitles:['Finance Intern','Financial Analyst Intern','Investment Banking Intern','Equity Research Intern','Accounts Intern','CA Intern'],
+    related:     ['Financial Analyst','Investment Banking Analyst','Equity Research Analyst','Credit Analyst','Risk Analyst'],
+    internRelated:['Finance Intern','Investment Banking Intern','Equity Research Intern','Accounts Intern','FinTech Intern'],
+    stipend:     ['₹10,000–20,000/mo','₹15,000–30,000/mo','₹25,000–50,000/mo'],
+  },
+  {
+    id: 'hr',
+    keywords: ['human resources','hr','talent acquisition','recruiter','people operations','hrbp','learning and development','l&d'],
+    fullTitles:  ['HR Analyst','Talent Acquisition Specialist','HRBP','People Operations Manager','L&D Manager'],
+    internTitles:['HR Intern','Talent Acquisition Intern','People Ops Intern','Recruitment Intern','L&D Intern','HR Operations Intern'],
+    related:     ['HR Analyst','Talent Acquisition Specialist','HRBP','People Operations Manager','HR Generalist'],
+    internRelated:['HR Intern','Talent Acquisition Intern','People Ops Intern','Recruitment Intern','HR Operations Intern'],
+    stipend:     ['₹8,000–15,000/mo','₹12,000–20,000/mo','₹15,000–25,000/mo'],
+  },
+  {
+    id: 'operations',
+    keywords: ['operations','supply chain','logistics','program manager','project manager','scm','procurement','vendor management'],
+    fullTitles:  ['Operations Manager','Supply Chain Analyst','Logistics Manager','Program Manager','Project Manager','Procurement Analyst'],
+    internTitles:['Operations Intern','Supply Chain Intern','Logistics Intern','Project Management Intern','Procurement Intern','Program Management Intern'],
+    related:     ['Operations Manager','Supply Chain Analyst','Logistics Manager','Program Manager','Project Manager'],
+    internRelated:['Operations Intern','Supply Chain Intern','Project Management Intern','Program Management Intern','Procurement Intern'],
+    stipend:     ['₹10,000–20,000/mo','₹15,000–25,000/mo','₹20,000–35,000/mo'],
+  },
+  {
+    id: 'content',
+    keywords: ['content writer','copywriter','technical writer','content strategist','content creator','journalist','editor'],
+    fullTitles:  ['Content Writer','Copywriter','Technical Writer','Content Strategist','Senior Content Manager'],
+    internTitles:['Content Writing Intern','Copywriting Intern','Technical Writing Intern','Content Intern','Editorial Intern','Journalism Intern'],
+    related:     ['Content Writer','Copywriter','Technical Writer','Content Strategist','Brand Journalist'],
+    internRelated:['Content Writing Intern','Copywriting Intern','Blogging Intern','Editorial Intern','Social Media Content Intern'],
+    stipend:     ['₹5,000–12,000/mo','₹8,000–18,000/mo','₹12,000–22,000/mo'],
+  },
+];
+
+// ── Smart query parser ──────────────────────────────────────────────
+function parseQuery(rawQuery) {
+  const q = rawQuery.toLowerCase().trim();
+  const isIntern = /\b(intern|internship|trainee|apprentice|summer intern|winter intern)\b/.test(q);
+
+  // Strip intern-related words to find the domain
+  const stripped = q
+    .replace(/\b(intern|internship|trainee|apprentice|summer|winter|part.?time)\b/g, '')
+    .replace(/\s+/g, ' ').trim();
+
+  // Find the best matching domain
+  let bestDomain = null;
+  let bestScore = 0;
+
+  for (const domain of ROLE_DOMAINS) {
+    for (const kw of domain.keywords) {
+      // Exact keyword match
+      if (stripped === kw || q === kw) { bestDomain = domain; bestScore = 100; break; }
+      // Keyword contains query words or vice versa
+      const kwWords = kw.split(' ');
+      const qWords = stripped.split(' ').filter(w => w.length > 2);
+      const matchCount = qWords.filter(w => kw.includes(w) || w.includes(kw.split(' ')[0])).length;
+      const score = matchCount / Math.max(qWords.length, 1) * 80;
+      if (score > bestScore) { bestScore = score; bestDomain = domain; }
+    }
+    if (bestScore === 100) break;
+  }
+
+  // If still no match, try looser: any word overlap
+  if (!bestDomain || bestScore < 20) {
+    const qWords = stripped.split(' ').filter(w => w.length > 3);
+    for (const domain of ROLE_DOMAINS) {
+      const allKwText = domain.keywords.join(' ');
+      if (qWords.some(w => allKwText.includes(w))) {
+        bestDomain = domain;
+        break;
+      }
+    }
+  }
+
+  // Final fallback: treat query literally
+  if (!bestDomain) {
+    return {
+      isIntern,
+      titlePool: isIntern
+        ? [`${rawQuery.replace(/intern(ship)?/i,'').trim()} Intern`, `${rawQuery} Intern`].filter(Boolean)
+        : [rawQuery],
+      related: [],
+      stipend: ['₹10,000–20,000/mo','₹15,000–25,000/mo'],
+      domain: null,
+    };
+  }
+
+  return {
+    isIntern,
+    titlePool: isIntern ? bestDomain.internTitles : bestDomain.fullTitles,
+    related: isIntern ? bestDomain.internRelated : bestDomain.related,
+    stipend: bestDomain.stipend,
+    domain: bestDomain,
+  };
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// DATA: RELATED ROLES MAP  (kept for showRelated — now uses parseQuery)
+// ══════════════════════════════════════════════════════════════════════
+const RELATED_ROLES = {}; // populated dynamically via parseQuery
 
 // ══════════════════════════════════════════════════════════════════════
 // DATA: JOB SOURCES (for search URL generation)
@@ -760,19 +925,6 @@ const COMPANIES = [
   { name: 'Innovaccer', logo: 'I', color: '#3b82f6', type: 'startup', growth: true },
 ];
 
-const TITLES_MAP = {
-  'product manager':          ['Product Manager','Senior PM','Associate PM','Growth PM','Technical PM','Platform PM'],
-  'associate product manager':['Associate Product Manager','Junior PM','Product Analyst','Growth PM','Product Operations Analyst'],
-  'data analyst':             ['Data Analyst','Senior Data Analyst','BI Analyst','Analytics Engineer','Reporting Analyst','Product Analyst'],
-  'software engineer':        ['Software Engineer','Senior SWE','Backend Engineer','Frontend Engineer','Full Stack Developer','Platform Engineer'],
-  'business analyst':         ['Business Analyst','Senior BA','Product Analyst','Operations Analyst','Strategy Analyst'],
-  'data scientist':           ['Data Scientist','ML Engineer','AI Engineer','Research Scientist','Analytics Scientist'],
-  'machine learning engineer':['ML Engineer','Machine Learning Engineer','AI Engineer','Deep Learning Engineer','NLP Engineer'],
-  'ux designer':              ['UX Designer','Product Designer','UI/UX Designer','UX Researcher','Interaction Designer'],
-  'marketing analyst':        ['Marketing Analyst','Digital Marketing Analyst','Growth Analyst','Performance Marketing Manager'],
-  'cybersecurity analyst':    ['Cybersecurity Analyst','Information Security Analyst','SOC Analyst','Threat Intelligence Analyst'],
-};
-
 const LOCATIONS_POOL = ['Mumbai','Bangalore','Pune','Hyderabad','Delhi NCR','Chennai','Remote','Noida','Gurgaon'];
 const MODES = ['Remote','Hybrid','On-site'];
 const EXP_LABELS = ['Fresher','0–1 Years','1–3 Years','3–5 Years','5–8 Years'];
@@ -780,22 +932,15 @@ const SOURCES = ['LinkedIn','Google Jobs','Naukri','Wellfound','YC Jobs','Greenh
 const SALARY_POOL = ['₹6–10 LPA','₹10–18 LPA','₹18–28 LPA','₹28–45 LPA','₹45–70 LPA','Not Disclosed'];
 
 function generateJobs(query, location, mode, exp, days) {
-  const key = query.toLowerCase().trim();
-  let titlePool = TITLES_MAP[key] || [];
-
-  // Fall back: find closest key
-  if (!titlePool.length) {
-    for (const [k, v] of Object.entries(TITLES_MAP)) {
-      if (k.includes(key) || key.includes(k) || k.split(' ').some(w => key.includes(w))) {
-        titlePool = v; break;
-      }
-    }
-  }
-  if (!titlePool.length) titlePool = [query];
+  const parsed = parseQuery(query);
+  const { isIntern, titlePool, stipend } = parsed;
 
   const jobs = [];
   const now = Date.now();
   const MS_DAY = 86400000;
+
+  // For internships: always use fresher/0-1 exp and stipend as salary
+  const internExpLabel = 'Fresher';
 
   let id = 1;
   COMPANIES.forEach(company => {
@@ -810,8 +955,16 @@ function generateJobs(query, location, mode, exp, days) {
       const wMode = mode && mode !== 'any'
         ? (Math.random() > 0.25 ? mode.charAt(0).toUpperCase() + mode.slice(1) : MODES[Math.floor(Math.random() * MODES.length)])
         : MODES[Math.floor(Math.random() * MODES.length)];
-      const expLabel = exp ? mapExpToLabel(exp) : EXP_LABELS[Math.floor(Math.random() * EXP_LABELS.length)];
-      const salary = SALARY_POOL[Math.floor(Math.random() * SALARY_POOL.length)];
+
+      let expLabel, salary;
+      if (isIntern) {
+        expLabel = internExpLabel;
+        salary = stipend[Math.floor(Math.random() * stipend.length)];
+      } else {
+        expLabel = exp ? mapExpToLabel(exp) : EXP_LABELS[Math.floor(Math.random() * EXP_LABELS.length)];
+        salary = SALARY_POOL[Math.floor(Math.random() * SALARY_POOL.length)];
+      }
+
       const source = SOURCES[Math.floor(Math.random() * SOURCES.length)];
       const applyUrl = buildApplyUrl(company.name, title, source);
 
@@ -820,10 +973,10 @@ function generateJobs(query, location, mode, exp, days) {
         companyLogo: company.logo, companyColor: company.color,
         companyType: company.type, companyGrowth: company.growth,
         location: loc, mode: wMode, exp: expLabel,
-        salary, source, applyUrl,
+        salary, isIntern, source, applyUrl,
         postedMs, daysAgo,
         salaryNum: parseSalary(salary),
-        isEntry: expLabel === 'Fresher' || expLabel === '0–1 Years',
+        isEntry: isIntern || expLabel === 'Fresher' || expLabel === '0–1 Years',
         saved: savedJobs.some(j => j.id === id - 1),
       });
     }
@@ -838,7 +991,8 @@ function mapExpToLabel(exp) {
 }
 
 function parseSalary(s) {
-  const m = s.match(/(\d+)–(\d+)/);
+  // Handles both "₹10–18 LPA" and "₹15,000–25,000/mo"
+  const m = s.replace(/,/g,'').match(/(\d+)[–-](\d+)/);
   return m ? parseInt(m[2]) : 0;
 }
 
@@ -933,19 +1087,21 @@ function showEmpty() {
 }
 
 function showRelated(title) {
-  const key = title.toLowerCase().trim();
-  let roles = null;
-  for (const [k, v] of Object.entries(RELATED_ROLES)) {
-    if (k.includes(key) || key.includes(k) || k.split(' ').some(w => key.includes(w) && w.length > 3)) {
-      roles = v; break;
-    }
+  const parsed = parseQuery(title);
+  const roles = parsed.related || [];
+  if (!roles.length) {
+    document.getElementById('related-section').style.display = 'none';
+    return;
   }
-  if (!roles) return;
 
   const section = document.getElementById('related-section');
   const chips = document.getElementById('related-chips');
+  const currentLower = title.toLowerCase();
+
   chips.innerHTML = roles.slice(0, 8).map(r => `
-    <span class="related-chip ${r.toLowerCase() === key ? 'active' : ''}" onclick="searchRelated('${r}')">${r}</span>
+    <span class="related-chip ${r.toLowerCase() === currentLower ? 'active' : ''}" onclick="searchRelated('${r.replace(/'/g,"\\'")}')">
+      ${parsed.isIntern ? '🎓' : '🔗'} ${r}
+    </span>
   `).join('');
   section.style.display = 'block';
 }
@@ -1035,10 +1191,11 @@ function buildJobCard(job) {
       </div>
     </div>
     <div class="card-tags">
+      ${job.isIntern ? '<span class="tag" style="background:rgba(99,102,241,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.35)">🎓 Internship</span>' : ''}
       <span class="tag tag-location">📍 ${job.location}</span>
       <span class="tag tag-mode">🏠 ${job.mode}</span>
       <span class="tag tag-exp">⏱ ${job.exp}</span>
-      ${job.salary !== 'Not Disclosed' ? `<span class="tag tag-salary">💰 ${job.salary}</span>` : ''}
+      ${job.salary !== 'Not Disclosed' ? `<span class="tag tag-salary">${job.isIntern ? '💵 Stipend: ' : '💰 '}${job.salary}</span>` : ''}
       <span class="tag tag-source">${job.companyType === 'startup' ? '🚀 Startup' : '🏢 Product Co.'}</span>
       ${job.companyGrowth ? '<span class="tag tag-source" style="color:#6ee7b7;border-color:rgba(16,185,129,0.2)">📈 High Growth</span>' : ''}
     </div>
